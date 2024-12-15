@@ -18,18 +18,21 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: [ '2.5', '2.6', '2.7', '3.0', 'ruby-head' ]
+        ruby: [ '3.0', '3.1', '3.2', '3.3', 'ruby-head' ]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+        cache-version: 1
+
     - name: Install dependencies
       run: bundle install
+
     - name: Run tests
       run: bin/rake
-    # Skip the linter for now.
-    # - name: Lint Ruby code
-    #   run: bin/standardrb
